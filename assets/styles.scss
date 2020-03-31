@@ -1,0 +1,51 @@
+body {
+  font-family: 'Avenir Next', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',;
+  font-size: 16px;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+
+.btn {
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 9px;
+  padding: 9px 19px;
+  border: 1px solid white;
+  &.cta-button {
+    background-color: #5D9CEC;
+    color: white;
+    &.btn-loading {
+      background-color: white;
+      border: 1px solid #BBB;
+      color: #999;
+    }
+  }
+  &.secondary-button {
+    background-color: #F5F5F5;
+    color: #999;
+    &.btn-loading {
+      color: #CFCFCF;
+    }
+  }
+  &.btn-success {
+    background-color: #37BC9B;
+    color: white;
+  }
+  &.btn-error {
+    background-color: #DA4453;
+    color: white;
+  }
+  &.btn-full {
+    width: 100%;
+  }
+  &.accent-button {
+    border: 1px solid #bbb;
+    background-color: white;
+    color: #777;
+  }
+}
+
+

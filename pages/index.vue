@@ -1,5 +1,5 @@
 <template>
-  <div class="row center">
+  <div class="container row center">
     Initial Setup.
   </div>
 </template>
@@ -11,4 +11,7 @@ export default {}
 </script>
 
 <style lang="scss">
+  .container {
+    padding: $inset-gutter;
+  }
 </style>

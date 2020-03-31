@@ -2,13 +2,13 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 if (!firebase.apps.length) {
     const config = {
-      apiKey: "AIzaSyAVrSAk9vit1mM0uUAM-FLvrNdHx9ioI_k",
-      authDomain: "paddy-sixtieth.firebaseapp.com",
-      databaseURL: "https://paddy-sixtieth.firebaseio.com",
-      projectId: "paddy-sixtieth",
-      storageBucket: "paddy-sixtieth.appspot.com",
-      messagingSenderId: "312879663440",
-      appId: "1:312879663440:web:b29fb8abca77cdb9e7c455"
+      apiKey: "AIzaSyCgHjuDY-lWmTPpQ3V-skkSGTqtDB-pJds",
+      authDomain: "isangpass.firebaseapp.com",
+      databaseURL: "https://isangpass.firebaseio.com",
+      projectId: "isangpass",
+      storageBucket: "isangpass.appspot.com",
+      messagingSenderId: "731758679812",
+      appId: "1:731758679812:web:22874a4b9c2228c8ad2251"
     }
     firebase.initializeApp(config)
 }

@@ -1,6 +1,6 @@
-# bday-greeting
+# IsangPass
 
-> My striking Nuxt.js project
+> IsangPass is an app that can generate Home Quarantine Pass for a household.
 
 ## Build Setup
 

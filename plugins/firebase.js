@@ -2,8 +2,10 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import Vue from 'vue';
 import VueFirestore from 'vue-firestore';
+import VueMoment from 'vue-moment';
 
 Vue.use(VueFirestore);
+Vue.use(VueMoment);
 
 if (!firebase.apps.length) {
     const config = {

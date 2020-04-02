@@ -31,9 +31,9 @@
             <tr v-for="(pass, index) in passes" :key=index>
               <td>{{ pass.name }}</td>
               <td>{{ pass.barangay }}</td>
-              <td>6:30am</td>
-              <td>2hr2m+</td>
-              <td>On-going</td>
+              <td>{{ new Date(pass.check_out.seconds * 1000) | moment("h:mm:ss a") }}</td>
+              <td :class="{'duration_done': !!pass.check_in}">{{ getTimeDuration(pass.check_out, pass.check_in || currentTime, !!!pass.check_in) }}</td>
+              <td>{{ getCheckinValue(pass.check_in) }}</td>
               <td>{{ pass.purpose }}</td>
             </tr>
             <tr>
@@ -67,7 +67,10 @@ export default {
   data() {
     return {
       passes: [],
-      isLoading: 'true'
+      isLoading: 'true',
+      currentTime: {
+        'seconds': (new Date().getTime())/1000
+      }
     }
   },
   firestore() {
@@ -85,34 +88,65 @@ export default {
     }
   },
   mounted() {
-    console.log('connecting to firestore...');
-    try {
-      let localCheckouts = [];
-      // const ref = fireDb.collection("passes").orderBy('check_out').get().then(querySnapshot => {
-      //   console.log('connected');
-      //   console.log(querySnapshot);
-      //   querySnapshot.forEach(doc => {
-      //     console.log(doc.data()['name']);
-      //     console.log(doc.data()['barangay']);
-      //     localCheckouts.push(doc.data());
-      //   });
-
-      //   localCheckouts.reverse();
-      //   this.messages = localCheckouts;
-      // });
-      // var ref = fireDb.ref("passes");
-      // ref.on("child_added", function(snapshot) {
-      //   console.log(snapshot.val());
-      // }, function (errorObject) {
-      //   console.log("The read failed: " + errorObject.code);
-      // });
-    } catch (e) {
-      console.error(e)
-    }
+    setInterval(() => {
+      this.currentTime = {
+        'seconds': (new Date().getTime())/1000
+      }
+    }, 1000);
   },
-  computed: {
-    getLatestCheckouts() {
+  methods: {
+    epochToHumanTime: function(epoch) {
+      var currDivisor = [1,60,60,24,7,4, 12];
+      var unitTime = ['s','m','h',' day',' week', ' month'];
+      var sentence = "";
+      var majorTime;
+      var minorTime = 0;
+      var majorTimeUnit;
+      var minorTimeUnit = '';
+      var i = 0;
+      var majorTimePhrase;
+      var minorTimePhrase;
 
+      majorTime = epoch;
+
+      for(let realTime = 1; i < currDivisor.length; i++){
+        majorTime /= currDivisor[i];
+        realTime *= currDivisor[i+1];
+
+        if((epoch) < (realTime)) break;
+      }
+
+      minorTime = Math.floor(parseFloat((majorTime - Math.floor(majorTime))*currDivisor[i]).toPrecision(12));
+      majorTime = Math.floor(majorTime);
+      majorTimeUnit = unitTime[i];
+      if(i > 0){
+        minorTimeUnit = unitTime[i-1];
+      }
+
+      majorTimePhrase = `${majorTime}${majorTimeUnit}${majorTime > 1 ? '' : ''}`;
+      minorTimePhrase = `${minorTime}${minorTimeUnit}${minorTime > 1 ? '' : ''}`;
+
+      sentence = `${majorTimePhrase}${i > 0 ? ' ' : ''}${i == 0 ? '' : ''}${ minorTime == 0 ? '' : i == 0 ? '' : minorTimePhrase + '' }`;
+      return sentence;
+    },
+    getTimeDuration: function(timeOut, timeIn, onGoing) {
+      let suffix = '';
+
+      if(onGoing) {
+        suffix = '+';
+      }
+      let diff = this.$moment(timeIn.seconds * 1000).diff(this.$moment(timeOut.seconds * 1000), 'seconds', true);
+      return this.epochToHumanTime(diff) + suffix;
+    },
+    getCheckinValue(time) {
+      try {
+        if(!!time) {
+          if(!!time.seconds) {
+            return this.$moment(time.seconds * 1000).format('h:mm:ss a');
+          }
+        }
+      } catch (error) {}
+      return 'On-going';
     }
   }
 }
@@ -278,7 +312,7 @@ export default {
       tr {
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         &:nth-child(even) {
-          opacity: .75;
+          opacity: .85;
         }
         &:nth-last-child(2) {
           border-bottom: 1px solid rgba(255, 255, 255, 0.025);

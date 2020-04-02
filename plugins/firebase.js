@@ -1,5 +1,10 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Vue from 'vue';
+import VueFirestore from 'vue-firestore';
+
+Vue.use(VueFirestore);
+
 if (!firebase.apps.length) {
     const config = {
       apiKey: "AIzaSyCgHjuDY-lWmTPpQ3V-skkSGTqtDB-pJds",

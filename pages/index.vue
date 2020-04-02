@@ -28,29 +28,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Jamesdas as</td>
-              <td>Matman Matman Matman</td>
+            <tr v-for="(pass, index) in passes" :key=index>
+              <td>{{ pass.name }}</td>
+              <td>{{ pass.barangay }}</td>
               <td>6:30am</td>
               <td>2hr2m+</td>
               <td>On-going</td>
-              <td>Matman</td>
-            </tr>
-            <tr>
-              <td>The</td>
-              <td>Tick</td>
-              <td>7:12am</td>
-              <td>2hr27m</td>
-              <td>9:41am</td>
-              <td>MatmanMatman Matman Matman</td>
-            </tr>
-            <tr>
-              <td>The</td>
-              <td>Tick</td>
-              <td>8:28am</td>
-              <td>32m+</td>
-              <td>On-going</td>
-              <td>MatmanMatman Matman Matman</td>
+              <td>{{ pass.purpose }}</td>
             </tr>
             <tr>
               <td colspan="6">
@@ -66,9 +50,8 @@
             </tr>
           </tbody>
         </table>
-
       </div>
-
+      {{this.isLoading}}
     </div>
   </div>
 </template>
@@ -80,6 +63,57 @@ import StatCard from '~/components/StatCard.vue'
 export default {
   components: {
     StatCard
+  },
+  data() {
+    return {
+      passes: [],
+      isLoading: 'true'
+    }
+  },
+  firestore() {
+    return {
+      passes: {
+        ref: fireDb.collection('passes'),
+        objects: true,
+        resolve: (data) => {
+          this.isLoading = false;
+        },
+        reject: (err) => {
+          this.isLoading = false;
+        }
+      }
+    }
+  },
+  mounted() {
+    console.log('connecting to firestore...');
+    try {
+      let localCheckouts = [];
+      // const ref = fireDb.collection("passes").orderBy('check_out').get().then(querySnapshot => {
+      //   console.log('connected');
+      //   console.log(querySnapshot);
+      //   querySnapshot.forEach(doc => {
+      //     console.log(doc.data()['name']);
+      //     console.log(doc.data()['barangay']);
+      //     localCheckouts.push(doc.data());
+      //   });
+
+      //   localCheckouts.reverse();
+      //   this.messages = localCheckouts;
+      // });
+      // var ref = fireDb.ref("passes");
+      // ref.on("child_added", function(snapshot) {
+      //   console.log(snapshot.val());
+      // }, function (errorObject) {
+      //   console.log("The read failed: " + errorObject.code);
+      // });
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  computed: {
+    getLatestCheckouts() {
+
+    }
   }
 }
 </script>
@@ -227,8 +261,8 @@ export default {
     }
 
     td {
-      padding-top: $space__base-2;
-      padding-bottom: $space__base-2;
+      padding-top: $space__base-3;
+      padding-bottom: $space__base-3;
       font-size: 14px;
       font-weight: 500;
       color: $color__slate-3;

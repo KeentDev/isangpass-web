@@ -31,16 +31,16 @@
             <tr v-for="(pass, index) in passes" :key=index>
               <td>{{ pass.name }}</td>
               <td>{{ pass.barangay }}</td>
-              <td>{{ new Date(pass.check_out.seconds * 1000) | moment("h:mm:ss a") }}</td>
+              <td>{{ new Date(pass.check_out.seconds * 1000) | moment("h:mma") }}</td>
               <td :class="{'duration_done': !!pass.check_in}">{{ getTimeDuration(pass.check_out, pass.check_in || currentTime, !!!pass.check_in) }}</td>
-              <td>{{ getCheckinValue(pass.check_in) }}</td>
+              <td :class="{'still_out': !!!pass.check_in}">{{ getCheckinValue(pass.check_in) }}</td>
               <td>{{ pass.purpose }}</td>
             </tr>
             <tr>
               <td colspan="6">
                 <div class="row pull-apart table-footer">
                   <div class="table-total">
-                    256 total today as of 4:03pm, March 31.
+                    256 total today as of {{ this.$moment(currentTime.seconds * 1000).format('h:mm:ssa, MMMM D') }}.
                   </div>
                   <div class="table-action">
                     View all
@@ -76,7 +76,7 @@ export default {
   firestore() {
     return {
       passes: {
-        ref: fireDb.collection('passes'),
+        ref: fireDb.collection('passes').where('check_out', '>=', this.getCurrentStartOfDay.toDate()),
         objects: true,
         resolve: (data) => {
           this.isLoading = false;
@@ -126,14 +126,14 @@ export default {
       majorTimePhrase = `${majorTime}${majorTimeUnit}${majorTime > 1 ? '' : ''}`;
       minorTimePhrase = `${minorTime}${minorTimeUnit}${minorTime > 1 ? '' : ''}`;
 
-      sentence = `${majorTimePhrase}${i > 0 ? ' ' : ''}${i == 0 ? '' : ''}${ minorTime == 0 ? '' : i == 0 ? '' : minorTimePhrase + '' }`;
+      sentence = `${majorTimePhrase}${i > 0 && minorTime != 0 ? ' ' : ''}${i == 0 ? '' : ''}${ minorTime == 0 ? '' : i == 0 ? '' : minorTimePhrase + '' }`;
       return sentence;
     },
     getTimeDuration: function(timeOut, timeIn, onGoing) {
       let suffix = '';
 
       if(onGoing) {
-        suffix = '+';
+        suffix = '...';
       }
       let diff = this.$moment(timeIn.seconds * 1000).diff(this.$moment(timeOut.seconds * 1000), 'seconds', true);
       return this.epochToHumanTime(diff) + suffix;
@@ -142,11 +142,27 @@ export default {
       try {
         if(!!time) {
           if(!!time.seconds) {
-            return this.$moment(time.seconds * 1000).format('h:mm:ss a');
+            return this.$moment(time.seconds * 1000).format('h:mma');
           }
         }
       } catch (error) {}
-      return 'On-going';
+      return 'Still out';
+    }
+  },
+  computed: {
+    getCurrentStartOfDay() {
+      let moment = this.$moment;
+      let local = moment().local();
+
+      let currentDay = moment(moment([
+        local.year(),
+        local.month(),
+        local.date(),
+        0,
+        0
+      ]));
+
+      return currentDay;
     }
   }
 }
@@ -362,6 +378,16 @@ export default {
 
     .table-total {
       font-size: 13px;
+      color: $color__slate-gray;
+    }
+
+    .duration_done {
+      color: $color__green-primary
+    }
+
+    .still_out {
+      font-weight: 400;
+      font-style: italic;
       color: $color__slate-gray;
     }
   }

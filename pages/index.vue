@@ -29,7 +29,7 @@
           </thead>
           <tbody>
             <tr v-for="(pass, index) in passes" :key=index>
-              <td>{{ pass.name }}</td>
+              <td>{{ `${pass.holder.first_name} ${pass.holder.last_name}` }}</td>
               <td>{{ pass.barangay }}</td>
               <td>{{ new Date(pass.check_out.seconds * 1000) | moment("h:mma") }}</td>
               <td :class="{'duration_done': !!pass.check_in}">{{ getTimeDuration(pass.check_out, pass.check_in || currentTime, !!!pass.check_in) }}</td>
@@ -76,7 +76,7 @@ export default {
   firestore() {
     return {
       passes: {
-        ref: fireDb.collection('passes').where('check_out', '>=', this.getCurrentStartOfDay.toDate()),
+        ref: fireDb.collection('passes').where('check_out', '>=', this.getCurrentStartOfDay.toDate()).orderBy('check_out', 'desc'),
         objects: true,
         resolve: (data) => {
           this.isLoading = false;
@@ -146,7 +146,7 @@ export default {
           }
         }
       } catch (error) {}
-      return 'Still out';
+      return '- -';
     }
   },
   computed: {
@@ -389,6 +389,7 @@ export default {
       font-weight: 400;
       font-style: italic;
       color: $color__slate-gray;
+      text-align: center;
     }
   }
 </style>

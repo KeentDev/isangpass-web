@@ -16,8 +16,7 @@
         <div class="nav__actions res--desktop">
           <ul class="row nav__items center">
             <nuxt-link class="nav__item row center" to="/" prefetch>Dashboard</nuxt-link>
-            <nuxt-link class="nav__item row center" to="/page-1" prefetch>About Us</nuxt-link>
-            <nuxt-link class="nav__item row center" to="/page-2" prefetch>Our Work</nuxt-link>
+            <nuxt-link class="nav__item row center" to="/page-1" prefetch>Barangays</nuxt-link>
           </ul>
         </div>
       </div>
@@ -40,8 +39,7 @@
       <div class="mobile_menu-wrap col center">
         <ul class="col nav__items center">
           <nuxt-link class="nav__item u-organism u-organism--1" to="/" prefetch>Dashboard</nuxt-link>
-          <nuxt-link class="nav__item u-organism u-organism--1" to="/page-1" prefetch>About Us</nuxt-link>
-          <nuxt-link class="nav__item u-organism u-organism--1" to="/page-2" prefetch>Our Work</nuxt-link>
+          <nuxt-link class="nav__item u-organism u-organism--1" to="/page-1" prefetch>Barangays</nuxt-link>
           <nuxt-link class="nav__item u-organism u-organism--1" to="/page-3" prefetch>Logout</nuxt-link>
         </ul>
       </div>

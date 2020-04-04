@@ -183,13 +183,6 @@ export default {
     margin: $space__base-6 0;
   }
 
-  .section__head {
-    font-size: 24px;
-    font-weight: 600;
-    color: $color__slate-3;
-    padding: 0 $inset-gutter;
-  }
-
   .section__body-filter-cntr {
     margin: $space__base-1 0;
   }

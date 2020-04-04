@@ -8,10 +8,12 @@
           <div class="nav__mobile_menu-stripe"></div>
         </div>
       </div>
-      <div class="brand_identity row center" @click="goToHome">
-        <div class="brand_identity__logo row center">
-          <img src="~/assets/images/logo.png" alt="IsangPass Logo">
-          <div class="brand_identity__logo-name">One<span>Pass</span></div>
+      <div class="row pull-left">
+        <div class="brand_identity row center" @click="goToHome">
+          <div class="brand_identity__logo row center">
+            <img src="~/assets/images/logo.png" alt="IsangPass Logo">
+            <div class="brand_identity__logo-name">One<span>Pass</span></div>
+          </div>
         </div>
         <div class="nav__actions res--desktop">
           <ul class="row nav__items center">

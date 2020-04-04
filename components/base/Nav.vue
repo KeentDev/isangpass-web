@@ -232,7 +232,8 @@ a {
   }
   .nav__item {
     height: 100%;
-    width: 6rem;
+    padding: 0 $space__base-4;
+    white-space: nowrap;
     position: relative;
   }
 }

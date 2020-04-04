@@ -13,6 +13,7 @@
   "dependencies": {
     "@firebase/app": "^0.6.0",
     "@firebase/firestore": "^1.13.0",
+    "@nuxtjs/axios": "^5.9.7",
     "@nuxtjs/style-resources": "^1.0.0",
     "firebase": "^7.11.0",
     "node-sass": "^4.13.1",
@@ -22,6 +23,7 @@
     "vue-qrcode-reader": "^2.1.1"
   },
   "devDependencies": {
+    "@nuxt/typescript-build": "^0.6.2",
     "nodemon": "^2.0.2"
   },
   "config": {

@@ -5,12 +5,26 @@
       <span class="required" v-if=isRequired>*</span>
       <span class="optional" v-if=isOptional>(optional)</span>
     </div>
-    <input :type=type :id=id :name=id :placeholder=placeholder :required=isRequired>
+    <input
+      :type=type
+      :id=id
+      :name=id
+      :placeholder=placeholder
+      v-model="value"
+      v-on:input="$emit('input', $event.target.value)"
+      :required=isRequired
+    >
   </div>
 </template>
 
 <script>
 export default {
+  name: 'FormField',
+  data () {
+    return {
+      value: ''
+    }
+  },
   props: {
     type: {
       type: String,
@@ -49,7 +63,7 @@ export default {
   input {
     border-radius: 7px;
     border: 1px solid #C7C7C7;
-    padding: $space__base-4 $form_field-padding;
+    padding: $space__base-3 $form_field-padding;
     font-size: 16px;
     font-weight: 00;
     color: $color__black;

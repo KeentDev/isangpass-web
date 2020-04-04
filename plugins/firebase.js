@@ -1,5 +1,10 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Vue from 'vue';
+import VueMoment from 'vue-moment';
+
+Vue.use(VueMoment);
+
 if (!firebase.apps.length) {
     const config = {
       apiKey: "AIzaSyCgHjuDY-lWmTPpQ3V-skkSGTqtDB-pJds",

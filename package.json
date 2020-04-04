@@ -11,13 +11,21 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@firebase/app": "^0.6.0",
+    "@firebase/firestore": "^1.13.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "firebase": "^7.11.0",
     "node-sass": "^4.13.1",
     "nuxt": "^2.0.0",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "vue-moment": "^4.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "config": {
+    "nuxt": {
+      "host": "0.0.0.0"
+    }
   }
 }

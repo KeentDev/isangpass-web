@@ -19,6 +19,7 @@
           <ul class="row nav__items center">
             <nuxt-link class="nav__item row center" to="/" prefetch>Dashboard</nuxt-link>
             <nuxt-link class="nav__item row center" to="/scan-pass" prefetch>Scan Pass</nuxt-link>
+            <nuxt-link class="nav__item row center" to="/create-homepass" prefetch>Create OnePass</nuxt-link>
           </ul>
         </div>
       </div>
@@ -42,8 +43,8 @@
         <ul class="col nav__items center">
           <nuxt-link class="nav__item u-organism u-organism--1" to="/" prefetch>Dashboard</nuxt-link>
           <nuxt-link class="nav__item u-organism u-organism--1" to="/scan-pass" prefetch>Scan Pass</nuxt-link>
-          <!-- <nuxt-link class="nav__item u-organism u-organism--1" to="/page-1" prefetch>Barangays</nuxt-link>
-          <nuxt-link class="nav__item u-organism u-organism--1" to="/page-3" prefetch>Logout</nuxt-link> -->
+          <nuxt-link class="nav__item u-organism u-organism--1" to="/create-homepass" prefetch>Create OnePass</nuxt-link>
+          <nuxt-link class="nav__item u-organism u-organism--1" to="/page-3" prefetch>Logout</nuxt-link>
         </ul>
       </div>
     </div>

@@ -235,9 +235,6 @@
   .qr_code-location {
     color: $color__slate-2;
   }
-  .section__head {
-    margin: $space__base-6 0;
-  }
   .qr_code-overlay-cntr {
     width: 100%;
     height: 100%;

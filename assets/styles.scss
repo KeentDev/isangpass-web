@@ -8,7 +8,7 @@ body {
 // Navigation bar
 @media only screen and (max-device-width: 780px) {
   .btn.btn {
-    padding: 10px 28px;
+    padding: 14px 28px;
     font-size: 16px;
   }
   .res--desktop.res--desktop {
@@ -121,4 +121,5 @@ h1 {
   font-weight: 600;
   color: $color__slate-3;
   padding: 0 $inset-gutter;
+  margin: $space__base-6 0;
 }

@@ -73,21 +73,22 @@ export default {
       }
     }
   },
-  firestore() {
-    return {
-      passes: {
-        ref: fireDb.collection('passes').where('check_out', '>=', this.getCurrentStartOfDay.toDate()).orderBy('check_out', 'desc'),
-        objects: true,
-        resolve: (data) => {
-          this.isLoading = false;
-        },
-        reject: (err) => {
-          this.isLoading = false;
-        }
-      }
-    }
-  },
   mounted() {
+    fireDb
+      .collection('passes')
+      .where('check_out', '>=', this.getCurrentStartOfDay.toDate())
+      .orderBy('check_out', 'desc')
+      .limit(5)
+      .onSnapshot(querySnapshot => {
+        let queryPasses = [];
+
+        querySnapshot.forEach(documentSnapshot => {
+          queryPasses.push(documentSnapshot.data());
+        });
+
+        this.passes = queryPasses;
+        this.isLoading = false;
+      })
     setInterval(() => {
       this.currentTime = {
         'seconds': (new Date().getTime())/1000
@@ -230,7 +231,7 @@ export default {
 	*/
 	@media
 	  only screen
-    and (max-width: 780px)  {
+    and (max-width: 620px)  {
 
 		/* Force table to not be like tables anymore */
 		table, thead, tbody, th, td, tr {
@@ -289,7 +290,7 @@ export default {
 
   @media
     only screen
-    and (min-width: 781px) {
+    and (min-width: 621px) {
 
     td, th {
       padding: 0 $inset-gutter;
@@ -328,7 +329,7 @@ export default {
       tr {
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         &:nth-child(even) {
-          opacity: .85;
+          opacity: .7;
         }
         &:nth-last-child(2) {
           border-bottom: 1px solid rgba(255, 255, 255, 0.025);

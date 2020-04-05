@@ -3,20 +3,17 @@
     <Nav />
     <nuxt />
     <Footer />
-    <SnackBar />>
   </div>
 </template>
 
 <script>
 import Nav from '~/components/base/Nav.vue'
 import Footer from '~/components/base/Footer.vue'
-import SnackBar from '~/components/SnackBar.vue'
 
 export default {
   components: {
     Nav,
     Footer,
-    SnackBar
   },
   head () {
     return {

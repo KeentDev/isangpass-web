@@ -29,8 +29,7 @@ export default {
   */
   plugins: [
     '~/plugins/firebase.js',
-    '~/plugins/env.js',
-    '~/plugins/notifier.js'
+    '~/plugins/env.js'
   ],
   /*
   ** Nuxt.js dev-modules

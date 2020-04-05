@@ -69,37 +69,47 @@ h1 {
 }
 
 .btn {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   border-radius: $border_radius-2;
   padding: 8px 16px;
   cursor: pointer;
+  &.btn-disabled {
+    background-color: rgba(255,255,255,.05) !important;
+    cursor: auto;
+  }
   &.btn-accent {
     background-color: $color__green-primary;
+    border: 1px solid $color__green-primary;
     color: white;
     &.btn-loading {
-      background-color: white;
-      border: 1px solid #BBB;
-      color: #999;
+      border: 1px solid rgba(255,255,255,.1);
+      color: $color__dark;
     }
-    &:hover {
-      background-color: #32AE8F;
+    &:not(.btn-disabled):hover {
+      opacity: .8;
     }
   }
   &.btn-secondary {
     color: $color__slate-4;
+    border: 1px solid #47556D;
     background-color: #47556D;
-    &:hover {
+    &.btn-disabled {
+      border: 1px solid rgba(255,255,255,.1);
+      color: $color__slate-1;
+      cursor: auto;
+    }
+    &:not(.btn-disabled):hover {
       opacity: .8;
     }
   }
-  &.btn-success {
-    background-color: #37BC9B;
-    color: white;
+  &.btn-success.btn-success {
+    border: 1px solid $color__green-primary;
+    color: $color__green-secondary;
   }
   &.btn-error {
-    background-color: #DA4453;
-    color: white;
+    border: 1px solid $color__red-secondary !important;
+    color: $color__red-secondary;
   }
   &.btn-full {
     width: 100%;

@@ -157,18 +157,12 @@
             .then(response => {
               const data = response.data;
               if(data.success) {
-                const homePassId = data.data.home_pass_id;
+                const onePassKey = data.data.one_pass_key;
+                const onePassPayload = [onePassKey, this.firstName, this.lastName, sampleBarangay].toString();
+
                 this.status = 'success'
 
-                this.qrValue = JSON.stringify({
-                  'home_pass_id': homePassId,
-                  'holder': {
-                    'first_name': this.firstName,
-                    'last_name': this.lastName,
-                  },
-                  "barangay": sampleBarangay,
-                  'note': '#StayHome #StaySafe'
-                });
+                this.qrValue = JSON.stringify(onePassPayload);
 
                 this.firstName = ''
                 this.lastName = ''

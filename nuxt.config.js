@@ -31,7 +31,7 @@ export default {
     '~/plugins/firebase.js',
     '~/plugins/env.js',
     '~/plugins/vue_moment.js',
-    '~/plugins/generate_qr_code.js',
+    '~/plugins/generate_qr_code.js'
   ],
   /*
   ** Nuxt.js dev-modules

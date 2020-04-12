@@ -146,14 +146,19 @@
       this.isValid = true;
 
       try {
-        data = JSON.parse(this.result)
+        const passParameters = this.result.split(",");
+        data = this.result
 
-        homePassId = data.home_pass_id || null;
-        firstName = data.holder.first_name || null;
-        lastName = data.holder.last_name || null;
-        barangay = data.holder.barangay || null;
+        if(passParameters.length == 4) {
+          const onePasskey = passParameters[0];
+          const firstName = passParameters[1];
+          const lastName = passParameters[2];
+          const barangay = passParameters[3];
 
-        console.log(homePassId, firstName, lastName, barangay);
+          console.log(onePasskey, firstName, lastName, barangay);
+        } else {
+          throw 'Invalid number of pass parameters.'
+        }
       } catch (error) {
         console.error('Something went wrong. Please try again.', error);
       }

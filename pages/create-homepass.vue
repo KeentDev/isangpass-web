@@ -57,13 +57,21 @@
               </span>
             </div>
           </button>
-          <button 
+          <button
             :class="{'btn-disabled': isDisable}"
-            class="btn btn-secondary" 
+            class="btn btn-secondary"
             @click.prevent="clearFields()"
             :disabled=isDisable
           >Clear</button>
         </div>
+        <qrcode
+          class="generate-qr_code-cntr"
+          v-if="qrValue != ''"
+          :value=qrValue
+          :options="{
+            width: 300,
+            color: { dark: '#000000' }
+          }"></qrcode>
       </form>
     </div>
   </div>
@@ -87,7 +95,8 @@
           firstName: '',
           lastName: '',
         },
-        status: ''
+        status: '',
+        qrValue: ''
       }
     },
     computed: {
@@ -130,6 +139,7 @@
         }
       },
       createOnePass () {
+        const sampleBarangay = "Mandalagan";
         if (this.validateForm()) {
           this.status = 'sending'
           this.$axios
@@ -137,7 +147,7 @@
               "data": {
                 "first_name": this.firstName,
                 "last_name": this.lastName,
-                "barangay": "Mandalagan"
+                "barangay": sampleBarangay
               }
             })
             .catch(e => {
@@ -145,10 +155,29 @@
               return Promise.reject()
             })
             .then(response => {
-              this.firstName = ''
-              this.lastName = ''
-              this.status = 'success'
-              return Promise.resolve(2500);
+              const data = response.data;
+              if(data.success) {
+                const homePassId = data.data.home_pass_id;
+                this.status = 'success'
+
+                this.qrValue = JSON.stringify({
+                  'home_pass_id': homePassId,
+                  'holder': {
+                    'first_name': this.firstName,
+                    'last_name': this.lastName,
+                  },
+                  "barangay": sampleBarangay,
+                  'note': '#StayHome #StaySafe'
+                });
+
+                this.firstName = ''
+                this.lastName = ''
+
+                return Promise.resolve(2500);
+              } else {
+                this.status = 'error'
+                return Promise.reject();
+              }
             })
             .catch(e => {
               return Promise.resolve(3500);
@@ -160,12 +189,12 @@
             });
         } else {
           console.log(this.validationErrors);
-          console.log('form not validated');
         }
       },
       clearFields () {
         this.firstName = '';
         this.lastName = '';
+        this.qrValue = '';
         this.status = '';
       }
     }
@@ -180,6 +209,7 @@
 
   .page-cntr {
     height: 100%;
+    overflow: hidden;
   }
 
   .contact_us-btn {
@@ -222,5 +252,12 @@
 
   button + button {
     margin-top: $space__base-3;
+  }
+
+  .generate-qr_code-cntr {
+    // max-width: 300px;
+    // width: 100%;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
   }
 </style>

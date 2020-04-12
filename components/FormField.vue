@@ -126,15 +126,15 @@ export default {
     span {
       &.optional {
         margin: 0 $space__base-1;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 500;
         color: $color__slate-2;
         opacity: .75;
       }
       &.required {
         margin: 0 $space__base-1;
-        font-size: 12px;
-        font-weight: 500;
+        font-size: 14px;
+        font-weight: 400;
         color: #FBD168;
       }
     }

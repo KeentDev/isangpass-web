@@ -134,16 +134,31 @@
     },
 
     async onDecode (content) {
+      let data;
+      let firstName;
+      let lastName;
+      let homePassId;
+      let barangay;
       this.result = content
       this.isProcessingQR = true;
       this.turnCameraOff()
 
-      // pretend it's taking really long
-      await this.timeout(1000)
-      this.isValid = content.startsWith('http')
-      console.log(this.result);
+      this.isValid = true;
 
-      // some more delay, so users have time to read the message
+      try {
+        data = JSON.parse(this.result)
+
+        homePassId = data.home_pass_id || null;
+        firstName = data.holder.first_name || null;
+        lastName = data.holder.last_name || null;
+        barangay = data.holder.barangay || null;
+
+        console.log(homePassId, firstName, lastName, barangay);
+      } catch (error) {
+        console.error('Something went wrong. Please try again.', error);
+      }
+
+
       await this.timeout(2000)
       this.showOverlayStatus = false;
 

@@ -14,6 +14,11 @@ body {
   .res--desktop.res--desktop {
     display: none;
   }
+  .nuxt-link-exact-active {
+    &::after {
+      background-color: transparent !important;
+    }
+  }
 }
 
 // Tablet mode down - small

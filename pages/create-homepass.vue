@@ -139,11 +139,11 @@
         }
       },
       createOnePass () {
-        const sampleBarangay = "Mandalagan";
+        const sampleBarangay = env.sample_barangay;
         if (this.validateForm()) {
           this.status = 'sending'
           this.$axios
-            .post(`/create-homepass`, {
+            .post('/create-homepass', {
               "data": {
                 "first_name": this.firstName,
                 "last_name": this.lastName,
@@ -162,7 +162,7 @@
 
                 this.status = 'success'
 
-                this.qrValue = JSON.stringify(onePassPayload);
+                this.qrValue = onePassPayload;
 
                 this.firstName = ''
                 this.lastName = ''
@@ -224,25 +224,28 @@
     margin-left: -14px;
   }
 
-  svg {
-    flex-shrink: 0;
-    margin-right: $space__base-2;
-    &.submit {
-      path {
-        fill: #ffffff
+  button {
+    svg {
+      flex-shrink: 0;
+      margin-right: $space__base-2;
+      &.submit {
+        path {
+          fill: #ffffff
+        }
       }
-    }
-    &.success {
-      path {
-        fill: $color__green-primary
+      &.success {
+        path {
+          fill: $color__green-primary
+        }
       }
-    }
-    &.error {
-      path {
-        fill: $color__red-secondary
+      &.error {
+        path {
+          fill: $color__red-secondary
+        }
       }
     }
   }
+
 
   button + button {
     margin-top: $space__base-3;

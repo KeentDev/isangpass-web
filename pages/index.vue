@@ -51,7 +51,6 @@
           </tbody>
         </table>
       </div>
-      {{this.isLoading}}
     </div>
   </div>
 </template>
@@ -322,7 +321,7 @@ export default {
       tr {
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         &:nth-child(even) {
-          opacity: .7;
+          opacity: .8;
         }
         &:nth-last-child(2) {
           border-bottom: 1px solid rgba(255, 255, 255, 0.025);

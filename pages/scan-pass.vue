@@ -31,6 +31,13 @@
                   {{scanFirstName}}
                 </div>
               </div>
+              <div class="purpose-selection-cntr col pull-start" v-if="this.scanPassType == 'check_out'">
+                <label for="purpose-selection">Purpose:</label>
+                <select id="purpose-selection" name="purpose-selection" v-model="scanPurpose">
+                  <option v-for="purpose in scanPurposeSelections" :value=purpose :key=purpose>{{purpose}}</option>
+                </select>
+              </div>
+
               <div class="btn-actions-cntr">
                 <OPCtaButton
                   :status="ctaStatus"
@@ -102,11 +109,13 @@
       scanBarangay: env.sample_barangay,
       ctaStatus: '',
       submitIsDisable: false,
-      ctaLabel: '',
+      ctaLabel: 'Check-out',
       successMsg: 'Success',
       errorMsg: '',
       scanFooterLabel: 'Scanning',
-      ctaErrorMsg: null
+      ctaErrorMsg: null,
+      scanPurposeSelections: ['Misc.', 'Buy Necessities', 'Essential Work', 'Essential Services', 'Bank Business', 'Health Appointment', 'Business Trip', 'Government Unit'],
+      scanPurpose: 'Misc.'
     }
   },
 
@@ -201,7 +210,7 @@
             "first_name": this.scanFirstName,
             "last_name": this.scanLastName
           },
-          "purpose": "Buy Medicine",
+          "purpose": this.scanPurpose,
         }
       }
 
@@ -471,6 +480,13 @@
     padding: $space__base-4 $space__base-5;
     background-color: rgba(0,0,0,.55);
     border-radius: $border_radius-1;
+    label {
+      font-size: 16px;
+      opacity: .85;
+      font-weight: 600;
+      margin-top: $space__base-2;
+      margin-bottom: $space__base-1;
+    }
   }
   .scan_details-name-cntr {
     font-size: 28px;
@@ -501,25 +517,20 @@
       }
     }
   }
-
   .btn {
     width: 100%;
     padding: 14px 16px;
   }
-
   button + button {
     margin-top: $space__base-3;
   }
-
   .btn-label {
     font-size: 18px;
   }
-
   .btn-actions-cntr {
     width: 100%;
     margin-top: $space__base-5
   }
-
   .error-msg-cntr {
     width: 100%;
     padding: $space__base-4 $space__base-5;
@@ -529,8 +540,11 @@
     font-size: 24px;
     font-weight: 600;
   }
-
   .error-msg-cancel {
     margin-top: $space__base-3;
+  }
+  #purpose-selection {
+    height: 2rem;
+    font-size: 14px;
   }
 </style>

@@ -1,10 +1,29 @@
 <template>
   <div>
+    <Nav />
     <nuxt />
+    <Footer />
   </div>
 </template>
 
-<style>
+<script>
+import Nav from '~/components/base/Nav.vue'
+import Footer from '~/components/base/Footer.vue'
+
+export default {
+  components: {
+    Nav,
+    Footer,
+  },
+  head () {
+    return {
+      title: 'IsangPass',
+    }
+  }
+}
+</script>
+
+<style lang="scss">
 html {
   font-family: 'Avenir Next', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -22,5 +41,9 @@ html {
 *:after {
   box-sizing: border-box;
   margin: 0;
+}
+
+body {
+  background-color: $color__dark;
 }
 </style>

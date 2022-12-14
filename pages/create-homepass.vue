@@ -1,0 +1,237 @@
+<template>
+  <div class="page-cntr col center">
+    <div class="section__head">
+      Create OnePass
+    </div>
+    <div class="section__body col center">
+      <form class="contact_us-form-cntr col center" id="validated-form">
+        <FormField
+          :is-required=true
+          :is-disabled=isDisable
+          type="text"
+          label="First Name"
+          placeholder="Type first name here..."
+          id="first-name"
+          :value.sync="firstName"
+          ></FormField>
+        <FormField
+          :is-required=true
+          :is-disabled=isDisable
+          type="text"
+          label="Last Name"
+          placeholder="Type last name here..."
+          id="last-name"
+          :value.sync="lastName"
+          ></FormField>
+        <div class="contact_us-btn col center">
+          <OPCtaButton :status="status" @btnClick="createOnePass">
+            <template v-slot:label-icon>
+              <svg class="submit" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.4414 24.5C15.3789 24.5 16.0234 23.8086 16.4336 22.7422L23.8398 3.35938C24.0156 2.90234 24.1094 2.48047 24.1094 2.11719C24.1094 1.22656 23.5352 0.652344 22.6445 0.652344C22.2812 0.652344 21.8594 0.746094 21.4023 0.921875L1.97266 8.35156C0.976562 8.73828 0.261719 9.37109 0.261719 10.3203C0.261719 11.4336 1.07031 11.9023 2.19531 12.2422L7.57422 13.9062C8.44141 14.1758 8.98047 14.1758 9.625 13.5898L22.2344 2.02344C22.4102 1.87109 22.6211 1.89453 22.75 2.01172C22.8789 2.14062 22.8906 2.36328 22.7383 2.52734L11.1953 15.1367C10.6562 15.7227 10.6094 16.3555 10.8672 17.1992L12.4961 22.5078C12.8477 23.668 13.3281 24.5 14.4414 24.5Z" fill="black"/>
+              </svg>
+            </template>
+          </OPCtaButton>
+          <button
+            :class="{'btn-disabled': isDisable}"
+            class="btn btn-secondary"
+            @click.prevent="clearFields()"
+            :disabled=isDisable
+          >Clear</button>
+        </div>
+        <qrcode
+          class="generate-qr_code-cntr"
+          v-if="qrValue != ''"
+          :value=qrValue
+          :options="{
+            width: 300,
+            color: { dark: '#000000' }
+          }"></qrcode>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+  import FormField from '~/components/FormField'
+  import LoadingSpinner from '~/components/LoadingSpinner'
+  import OPCtaButton from '~/components/OPCtaButton'
+  import {env} from '~/plugins/env.js'
+
+  export default {
+    components: {
+      FormField,
+      LoadingSpinner,
+      OPCtaButton
+    },
+    data () {
+      return {
+        firstName: '',
+        lastName: '',
+        validationErrors: {
+          firstName: '',
+          lastName: '',
+        },
+        status: '',
+        qrValue: ''
+      }
+    },
+    computed: {
+      isDisable () {
+        return this.status == 'sending'
+      },
+      submitIsDisable () {
+        return this.status == 'sending' || this.status == 'error'
+      }
+    },
+    methods: {
+      validateForm (formId = 'validated-form', errorObjectName = 'validationErrors') {
+        var nodes = document.querySelectorAll(`#${formId} :invalid`);
+        var vm = this; //current vue instance;
+
+        Object.keys(this[errorObjectName]).forEach(key => {
+            this[errorObjectName][key] = null
+        });
+
+        if (nodes.length > 0) {
+            nodes.forEach(node => {
+                if (node.title) {
+                    this[errorObjectName][node.name] = node.title;
+                }
+                else {
+                    this[errorObjectName][node.name] = node.validationMessage;
+                }
+
+                node.addEventListener('change', function (e) {
+                    vm.validateForm(formId, errorObjectName);
+                });
+            });
+
+            console.log('false');
+            return false;
+        }
+        else {
+            console.log('true');
+            return true;
+        }
+      },
+      createOnePass () {
+        const sampleBarangay = env.sample_barangay;
+        if (this.validateForm()) {
+          this.status = 'sending'
+          this.firstName = this.firstName.replace(/,/g, '');
+          this.lastName = this.lastName.replace(/,/g, '');
+          this.$axios
+            .post('/create-homepass', {
+              "data": {
+                "first_name": this.firstName,
+                "last_name": this.lastName,
+                "barangay": sampleBarangay
+              }
+            })
+            .catch(e => {
+              this.status = 'error'
+              return Promise.reject()
+            })
+            .then(response => {
+              const data = response.data;
+              if(data.success) {
+                const onePassKey = data.data.one_pass_key;
+                const onePassPayload = [onePassKey, this.firstName, this.lastName, sampleBarangay].toString();
+
+                this.status = 'success'
+
+                this.qrValue = onePassPayload;
+
+                this.firstName = ''
+                this.lastName = ''
+
+                return Promise.resolve(2500);
+              } else {
+                this.status = 'error'
+                return Promise.reject();
+              }
+            })
+            .catch(e => {
+              return Promise.resolve(3500);
+            })
+            .then(duration => {
+              setTimeout(() => {
+                this.status = ''
+              }, duration || 2000);
+            });
+        } else {
+          console.error(this.validationErrors);
+        }
+      },
+      clearFields () {
+        this.firstName = '';
+        this.lastName = '';
+        this.qrValue = '';
+        this.status = '';
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .section__body {
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-cntr {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .contact_us-btn {
+    width: 100%;
+    margin: $space__base-5 0;
+    button {
+      padding: $space__base-3 $space__base-6;
+      width: 100%;
+    }
+  }
+
+  .contact_us-form-cntr {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .btn-label {
+    margin-left: -14px;
+  }
+
+  button {
+    svg {
+      flex-shrink: 0;
+      margin-right: $space__base-2;
+      &.submit {
+        path {
+          fill: #ffffff
+        }
+      }
+      &.success {
+        path {
+          fill: $color__green-primary
+        }
+      }
+      &.error {
+        path {
+          fill: $color__red-secondary
+        }
+      }
+    }
+  }
+
+  button + button {
+    margin-top: $space__base-3;
+  }
+
+  .generate-qr_code-cntr {
+    // max-width: 300px;
+    // width: 100%;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+  }
+</style>

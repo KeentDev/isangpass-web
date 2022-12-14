@@ -1,3 +1,4 @@
+import {env} from './plugins/env.js'
 
 export default {
   mode: 'spa',
@@ -26,19 +27,28 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
- plugins: [
-  '~/plugins/firebase.js'
-],
+  plugins: [
+    '~/plugins/firebase.js',
+    '~/plugins/env.js',
+    '~/plugins/vue_moment.js',
+    '~/plugins/generate_qr_code.js'
+  ],
   /*
   ** Nuxt.js dev-modules
   */
-  buildModules: [
-  ],
+  buildModules: ['@nuxt/typescript-build'],
   /*
   ** Nuxt.js modules
   */
-  modules: [
-  ],
+ modules: ["@nuxtjs/style-resources", '@nuxtjs/axios'],
+  axios: {
+    baseURL: env.server_url,
+    proxyHeaders: false,
+    credentials: false
+  },
+ styleResources: {
+   scss: ["~assets/var/design_tokens.scss"]
+ },
   /*
   ** Build configuration
   */
